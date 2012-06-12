@@ -14,19 +14,22 @@ public class ConcordionPlusExtensionTest {
     @Mock
     private ScenarioExtension scenarioExtension;
     @Mock
+    private MatrixExtension matrixExtension;
+    @Mock
     private ConcordionExtender concordionExtender;
 
     private ConcordionPlusExtension concordionPlusExtension;
 
     @Before
     public void setUp() throws Exception {
-        concordionPlusExtension = new ConcordionPlusExtension(scenarioExtension);
+        concordionPlusExtension = new ConcordionPlusExtension(scenarioExtension, matrixExtension);
     }
 
     @Test
-    public void shouldRegisterScenarioExtension() throws Exception {
+    public void shouldRegisterExtensions() throws Exception {
         concordionPlusExtension.addTo(concordionExtender);
 
         verify(scenarioExtension).addTo(concordionExtender);
+        verify(matrixExtension).addTo(concordionExtender);
     }
 }

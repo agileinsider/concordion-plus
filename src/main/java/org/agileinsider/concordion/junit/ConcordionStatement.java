@@ -1,7 +1,9 @@
 package org.agileinsider.concordion.junit;
 
 import org.agileinsider.concordion.ConcordionPlusExtension;
+import org.agileinsider.concordion.MatrixExtension;
 import org.agileinsider.concordion.ScenarioExtension;
+import org.agileinsider.concordion.command.MatrixCommand;
 import org.agileinsider.concordion.command.ScenarioCommand;
 import org.agileinsider.concordion.render.ScenarioResultRenderer;
 import org.concordion.Concordion;
@@ -11,6 +13,7 @@ import org.concordion.api.Source;
 import org.concordion.api.Target;
 import org.concordion.internal.ConcordionBuilder;
 import org.concordion.internal.OgnlEvaluatorFactory;
+import org.concordion.internal.listener.AssertResultRenderer;
 import org.concordion.internal.util.IOUtil;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.Statement;
@@ -23,6 +26,7 @@ public class ConcordionStatement extends Statement {
     private final Object fixture;
     private RunNotifier notifier;
     private ScenarioCommand scenarioCommand;
+    private final MatrixCommand matrixCommand;
 
     public ConcordionStatement(Class fixtureClass, Object fixture, RunNotifier notifier) {
         this.fixtureClass = fixtureClass;
@@ -30,7 +34,8 @@ public class ConcordionStatement extends Statement {
         this.notifier = notifier;
 
         scenarioCommand = new ScenarioCommand();
-        addScenarioListeners();
+        matrixCommand = new MatrixCommand();
+        addCommandListeners();
     }
 
     public void evaluate() throws Throwable {
@@ -47,6 +52,9 @@ public class ConcordionStatement extends Statement {
         concordionBuilder.withCommand(ConcordionPlusExtension.CONCORDION_PLUS_NAMESPACE,
                 ScenarioExtension.SCENARIO_COMMAND,
                 scenarioCommand);
+        concordionBuilder.withCommand(ConcordionPlusExtension.CONCORDION_PLUS_NAMESPACE,
+                MatrixExtension.MATRIX_COMMAND,
+                matrixCommand);
         String css = IOUtil.readResourceAsString(ConcordionPlusExtension.CONCORDION_PLUS_CSS);
         concordionBuilder.withEmbeddedCSS(css);
 
@@ -56,7 +64,8 @@ public class ConcordionStatement extends Statement {
         resultSummary.assertIsSatisfied(fixture);
     }
 
-    private void addScenarioListeners() {
+    private void addCommandListeners() {
+        matrixCommand.addAssertEqualsListener(new AssertResultRenderer());
         scenarioCommand.addScenarioListener(new ScenarioResultRenderer());
         scenarioCommand.addScenarioListener(new ScenarioNotifier(new NotifierFactory(notifier, fixtureClass)));
     }

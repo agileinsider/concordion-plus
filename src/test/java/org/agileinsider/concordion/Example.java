@@ -12,4 +12,8 @@ public class Example {
     public String getUnexpectedAssertionMessage() {
         return "unexpected message";
     }
+
+    public int multiply(String row, String column, String expected) {
+        return Integer.parseInt(row) * Integer.parseInt(column);
+    }
 }

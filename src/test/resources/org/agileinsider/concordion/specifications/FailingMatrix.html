@@ -1,0 +1,58 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css"/>
+<body>
+
+<h1>Failing Matrix</h1>
+
+<div class="example">
+    <h3>Example</h3>
+
+    <p>When the matrix extension is installed that adds the <code>matrix</code> command in
+        the <code>http://www.agileinsider.org/concordion/plus</code> namespace.
+        This command will highlight failing matrix specifications.</p>
+
+    <p>Running a specification containing: </p>
+<pre c:execute="process(#TEXT)">
+&lt;div xmlns:cp="http://www.agileinsider.org/concordion/plus" xmlns:c="http://www.concordion.org/2007/concordion"&gt;
+        &lt;table cp:matrix="multiply(#row,#column)"&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;times&lt;/th&gt;
+                &lt;th&gt;7&lt;/th&gt;
+                &lt;th&gt;12&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tr&gt;
+                &lt;td&gt;3&lt;/td&gt;
+                &lt;td&gt;21&lt;/td&gt;
+                &lt;td&gt;35&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+&lt;/div&gt;
+</pre>
+
+    <p>Should produce:</p>
+<pre c:assertEquals="getOutput()">
+&lt;div xmlns:cp="http://www.agileinsider.org/concordion/plus" xmlns:c="http://www.concordion.org/2007/concordion"&gt;
+        &lt;table cp:matrix="multiply(#row,#column)"&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;times&lt;/th&gt;
+                &lt;th&gt;7&lt;/th&gt;
+                &lt;th&gt;12&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tr&gt;
+                &lt;td&gt;3&lt;/td&gt;
+                &lt;td class="success"&gt;21&lt;/td&gt;
+                &lt;td class="failure"&gt;&lt;del class="expected"&gt;35&lt;/del&gt;
+                    &lt;ins class="actual"&gt;36&lt;/ins&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+&lt;/div&gt;
+</pre>
+
+</div>
+
+</body>
+</html>

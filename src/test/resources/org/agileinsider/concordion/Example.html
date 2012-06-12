@@ -50,6 +50,27 @@
         <li class="scenario" cp:scenario="A list item which is done">Something we've done ;)</li>
         <li class="scenario" cp:scenario="Another list item which is done">Something else we've completed</li>
     </ul>
-</div>
+
+    <h3>Using matrix table</h3>
+    <table cp:matrix="multiply(#row,#column,#cell)">
+        <thead>
+        <tr>
+            <th>mult</th>
+            <th>1</th>
+            <th>2</th>
+        </tr>
+        </thead>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>2</td>
+            <td>4</td>
+        </tr>
+    </table>
+    </div>
 </body>
 </html>
