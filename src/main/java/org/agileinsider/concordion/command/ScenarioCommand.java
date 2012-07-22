@@ -40,10 +40,7 @@ public class ScenarioCommand extends AbstractCommand {
             return;
         }
         try {
-            OgnlContext permissiveContext = new OgnlContext();
-            permissiveContext.setMemberAccess(new DefaultMemberAccess(true));
-            Object rootObject = Ognl.getValue("rootObject", permissiveContext, evaluator);
-            scenarioFixture = rootObject.getClass().newInstance();
+            scenarioFixture = ExposeFixtureClassHack.getFixtureClass(evaluator).newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Nasty hack exposed!!!", e);
         }

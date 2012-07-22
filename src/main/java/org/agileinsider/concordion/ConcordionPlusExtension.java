@@ -9,18 +9,21 @@ public class ConcordionPlusExtension implements ConcordionExtension {
 
     private final ScenarioExtension scenarioExtension;
     private final MatrixExtension matrixExtension;
+    private final CsvMatrixExtension csvMatrixExtension;
 
     public ConcordionPlusExtension() {
-        this(new ScenarioExtension(), new MatrixExtension());
+        this(new ScenarioExtension(), new MatrixExtension(), new CsvMatrixExtension());
     }
 
-    public ConcordionPlusExtension(ScenarioExtension scenarioExtension, MatrixExtension matrixExtension) {
+    public ConcordionPlusExtension(ScenarioExtension scenarioExtension, MatrixExtension matrixExtension, CsvMatrixExtension csvMatrixExtension) {
         this.scenarioExtension = scenarioExtension;
         this.matrixExtension = matrixExtension;
+        this.csvMatrixExtension = csvMatrixExtension;
     }
 
     public void addTo(ConcordionExtender concordionExtender) {
         scenarioExtension.addTo(concordionExtender);
         matrixExtension.addTo(concordionExtender);
+        csvMatrixExtension.addTo(concordionExtender);
     }
 }

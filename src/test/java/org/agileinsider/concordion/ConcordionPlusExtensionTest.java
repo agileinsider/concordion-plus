@@ -16,13 +16,15 @@ public class ConcordionPlusExtensionTest {
     @Mock
     private MatrixExtension matrixExtension;
     @Mock
+    private CsvMatrixExtension csvMatrixExtension;
+    @Mock
     private ConcordionExtender concordionExtender;
 
     private ConcordionPlusExtension concordionPlusExtension;
 
     @Before
     public void setUp() throws Exception {
-        concordionPlusExtension = new ConcordionPlusExtension(scenarioExtension, matrixExtension);
+        concordionPlusExtension = new ConcordionPlusExtension(scenarioExtension, matrixExtension, csvMatrixExtension);
     }
 
     @Test
@@ -31,5 +33,6 @@ public class ConcordionPlusExtensionTest {
 
         verify(scenarioExtension).addTo(concordionExtender);
         verify(matrixExtension).addTo(concordionExtender);
+        verify(csvMatrixExtension).addTo(concordionExtender);
     }
 }

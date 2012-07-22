@@ -1,0 +1,37 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css"/>
+<body>
+
+<h1>Successful CSV Matrix</h1>
+
+<div class="example">
+    <h3>Example</h3>
+
+    <p>When the CSV Matrix extension is installed that adds the <code>csv-matrix</code> command in
+        the <code>http://www.agileinsider.org/concordion/plus</code> namespace.
+        This command will highlight passing CSV matrix fixtures.</p>
+
+    <p>With a csv file containing:</p>
+    <pre>
+times,7,12
+3,21,36
+9,63,108
+    </pre>
+
+    <p>And a fixture which has the method <pre>int multiply(int row, int column)</pre></p>
+
+    <p>Running a specification containing: </p>
+<pre c:execute="process(#TEXT)">
+&lt;div xmlns:cp="http://www.agileinsider.org/concordion/plus" xmlns:c="http://www.concordion.org/2007/concordion"&gt;
+    &lt;a href="SuccessfulCsvMatrixExample.csv" cp:csv-matrix="multiply(#row, #column)"&gt;csvfile.csv&lt;/a&gt;
+&lt;/div&gt;
+</pre>
+    <p>Should produce html containing:</p>
+    <ul>
+        <li c:assertEquals="outputContains(#TEXT)">&lt;td&gt;3&lt;/td&gt;&lt;td class="success"&gt;21&lt;/td&gt;&lt;td class="success"&gt;36&lt;/td&gt;</li>
+        <li c:assertEquals="outputContains(#TEXT)">&lt;td&gt;9&lt;/td&gt;&lt;td class="success"&gt;63&lt;/td&gt;&lt;td class="success"&gt;108&lt;/td&gt;</li>
+    </ul>
+</div>
+
+</body>
+</html>
