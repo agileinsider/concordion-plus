@@ -1,8 +1,10 @@
 package org.agileinsider.concordion.junit;
 
 import org.agileinsider.concordion.ConcordionPlusExtension;
+import org.agileinsider.concordion.CsvMatrixExtension;
 import org.agileinsider.concordion.MatrixExtension;
 import org.agileinsider.concordion.ScenarioExtension;
+import org.agileinsider.concordion.command.CsvMatrixCommand;
 import org.agileinsider.concordion.command.MatrixCommand;
 import org.agileinsider.concordion.command.ScenarioCommand;
 import org.agileinsider.concordion.render.ScenarioResultRenderer;
@@ -27,6 +29,7 @@ public class ConcordionStatement extends Statement {
     private RunNotifier notifier;
     private ScenarioCommand scenarioCommand;
     private final MatrixCommand matrixCommand;
+    private final CsvMatrixCommand csvMatrixCommand;
 
     public ConcordionStatement(Class fixtureClass, Object fixture, RunNotifier notifier) {
         this.fixtureClass = fixtureClass;
@@ -35,7 +38,16 @@ public class ConcordionStatement extends Statement {
 
         scenarioCommand = new ScenarioCommand();
         matrixCommand = new MatrixCommand();
+        csvMatrixCommand = createCsvMatrixCommand();
         addCommandListeners();
+    }
+
+    private CsvMatrixCommand createCsvMatrixCommand() {
+        try {
+            return new CsvMatrixCommand();
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     public void evaluate() throws Throwable {
@@ -55,6 +67,11 @@ public class ConcordionStatement extends Statement {
         concordionBuilder.withCommand(ConcordionPlusExtension.CONCORDION_PLUS_NAMESPACE,
                 MatrixExtension.MATRIX_COMMAND,
                 matrixCommand);
+        if (csvMatrixCommand != null) {
+            concordionBuilder.withCommand(ConcordionPlusExtension.CONCORDION_PLUS_NAMESPACE,
+                    CsvMatrixExtension.CSV_MATRIX_COMMAND,
+                    csvMatrixCommand);
+        }
         String css = IOUtil.readResourceAsString(ConcordionPlusExtension.CONCORDION_PLUS_CSS);
         concordionBuilder.withEmbeddedCSS(css);
 
@@ -66,6 +83,9 @@ public class ConcordionStatement extends Statement {
 
     private void addCommandListeners() {
         matrixCommand.addAssertEqualsListener(new AssertResultRenderer());
+        if (csvMatrixCommand != null) {
+            csvMatrixCommand.addAssertEqualsListener(new AssertResultRenderer());
+        }
         scenarioCommand.addScenarioListener(new ScenarioResultRenderer());
         scenarioCommand.addScenarioListener(new ScenarioNotifier(new NotifierFactory(notifier, fixtureClass)));
     }

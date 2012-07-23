@@ -35,6 +35,7 @@ public class CsvMatrixCommand extends AssertEqualsCommand {
 
                 Element htmlResultsRow = new Element("tr");
                 htmlResultsRow.appendChild(new Element("td").appendText(rowFirstColumnValue));
+                htmlResultsTable.appendChild(htmlResultsRow);
 
                 for (int i = 1; i < row.length; i++) {
                     String columnHeaderValue = headers[i];
@@ -49,8 +50,6 @@ public class CsvMatrixCommand extends AssertEqualsCommand {
                     commandCall.setElement(cellElement);
                     super.verify(commandCall, evaluator, resultRecorder);
                 }
-
-                htmlResultsTable.appendChild(htmlResultsRow);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
