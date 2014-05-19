@@ -36,6 +36,10 @@ public class StubTarget implements Target {
         return hasCopiedResource(resource) || writtenStrings.containsKey(resource);
     }
 
+    public String resolvedPathFor(Resource resource) {
+        return resource.getPath();
+    }
+
     public boolean hasCopiedResource(Resource resource) {
         return copiedResources.contains(resource);
     }

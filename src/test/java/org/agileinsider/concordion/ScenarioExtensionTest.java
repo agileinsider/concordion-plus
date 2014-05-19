@@ -53,11 +53,11 @@ public class ScenarioExtensionTest {
     public void shouldRegisterCssWhichIncludesSkipStyle() throws Exception {
         ignoreExtension.addTo(concordionExtender);
 
-        verify(concordionExtender).withEmbeddedCSS(withStyles(".pass", ".fail", ".error"));
+        verify(concordionExtender).withEmbeddedCSS(withStyles(".pass", ".fail", ".error", ".skip"));
     }
 
     private String withStyles(String... styles) {
-        LinkedList<Matcher<? extends String>> matchers = new LinkedList<Matcher<? extends String>>();
+        LinkedList<Matcher<? super String>> matchers = new LinkedList<Matcher<? super String>>();
         for (String style : styles) {
             matchers.add(new Contains(style));
         }

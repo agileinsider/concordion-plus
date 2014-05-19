@@ -1,0 +1,78 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'nexus'
+
+apply from: 'http://tellurianring.com/projects/gradle-plugins/gradle-release/apply.groovy'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.concordion:concordion:1.4.4'
+    compile 'com.googlecode.jcsv:jcsv:1.4.0'
+
+    testCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+compileJava {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+
+test {
+    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
+}
+
+createReleaseTag.dependsOn uploadArchives
+
+modifyPom { pom ->
+    project {
+        name 'concordion-plus'
+        description 'This library adds some additional functionality to concordion such as scenarios (useful for BDD / Spec By Example) and matrix operations.'
+        url 'http://www.agileinsider.org/concordion-plus/'
+        packaging 'jar'
+        inceptionYear '2011'
+
+        scm {
+            url 'https://github.com/agileinsider/concordion-plus.git'
+            connection 'scm:git:git://github.com/agileinsider/concordion-plus.git'
+            developerConnection 'scm:git:git@github.com:agileinsider/concordion-plus.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.html'
+                distribution 'repo'
+            }
+        }
+
+        issueManagement{ 
+            system 'GoogleCode'
+            url 'http://code.google.com/p/concordion-plus/issues'
+        }
+
+        developers {
+            developer {
+                id 'agileinsider'
+                name 'Mark Barnes'
+                roles { role 'Project owner' }
+                email 'mark@agileinsider.org'
+            }
+        }
+
+        pom.dependencies.find { it.artifactId == 'jcsv' }.optional = true
+    }
+}

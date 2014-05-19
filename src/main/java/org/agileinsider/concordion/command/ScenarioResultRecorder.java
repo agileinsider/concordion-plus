@@ -2,6 +2,7 @@ package org.agileinsider.concordion.command;
 
 import org.concordion.api.Result;
 import org.concordion.api.ResultRecorder;
+import org.concordion.internal.FailFastException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,10 @@ public class ScenarioResultRecorder implements ResultRecorder {
 
     public void record(Result result) {
         recordedResults.add(result);
+    }
+
+    public void recordFailFastException(FailFastException exception) {
+        recordedResults.add(Result.EXCEPTION);
     }
 
     public long getCount(Result result) {
